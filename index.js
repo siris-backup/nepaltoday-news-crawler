@@ -13,7 +13,20 @@ var c = new Crawler({
             var $ = res.$;
             // $ is Cheerio by default
             //a lean implementation of core jQuery designed specifically for the server
-            console.log($("title").text());
+            $(news).each(function(i, item){
+                newstitle=$(item).find("h1").text();
+                if(newstitle=="")
+                {
+                    newstitle=$(item).find("h2").text()   
+                }
+                if(newstitle=="")
+                {
+                    newstitle=$(item).find("h3").text()   
+                }
+                console.log(newstitle);
+            });
+
+            
         }
         done();
     }
