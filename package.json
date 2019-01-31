@@ -1,0 +1,21 @@
+{
+  "name": "nepaltoday",
+  "version": "1.0.0",
+  "description": "Mobile App for the news",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "Mobile",
+    "App",
+    "News",
+    "Online",
+    "news"
+  ],
+  "author": "NepalToday",
+  "license": "ISC",
+  "dependencies": {
+    "crawler": "^1.2.0"
+  }
+}
