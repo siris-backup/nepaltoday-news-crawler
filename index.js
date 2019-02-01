@@ -31,6 +31,7 @@ var c = new Crawler({
             
             //top lastest block news artciles
             $(".main-news").find(".blocks").find("article").each((i,item)=>{
+                objNewsItem=new Object();
                 objNewsItem.Title=$(item).find("h3").text();
                 objNewsItem.Link=$(item).find("div").find("figure").find("a").attr("href");
                 objNewsItem.ImageSource=$(item).find("div").find("figure").find("img").attr("src");
