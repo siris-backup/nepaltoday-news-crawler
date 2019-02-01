@@ -1,21 +1,28 @@
 {
-  "name": "nepaltoday",
-  "version": "1.0.0",
-  "description": "Mobile App for the news",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [
-    "Mobile",
-    "App",
-    "News",
-    "Online",
-    "news"
-  ],
-  "author": "NepalToday",
-  "license": "ISC",
-  "dependencies": {
-    "crawler": "^1.2.0"
-  }
+	"name": "nepaltoday",
+	"version": "1.0.0",
+	"description": "Mobile App for the news",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"start": "babel-node index.js"
+	},
+	"keywords": [
+		"Mobile",
+		"App",
+		"News",
+		"Online",
+		"news"
+	],
+	"author": "NepalToday",
+	"license": "ISC",
+	"dependencies": {
+		"crawler": "^1.2.0"
+	},
+	"devDependencies": {
+		"babel-cli": "^6.26.0",
+		"babel-preset-latest": "^6.24.1",
+		"eslint": "^5.12.1",
+		"eslint-plugin-import": "^2.16.0"
+	}
 }
