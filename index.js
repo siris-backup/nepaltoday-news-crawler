@@ -1,6 +1,8 @@
-console.log('crawler init');
+console.log('crawler init....');
 var Crawler = require("crawler");
 console.log('crawler init completed');
+
+var newscollection =new Array();
 
  
 var c = new Crawler({
@@ -13,20 +15,30 @@ var c = new Crawler({
             var $ = res.$;
             // $ is Cheerio by default
             //a lean implementation of core jQuery designed specifically for the server
-            $(news).each(function(i, item){
-                newstitle=$(item).find("h1").text();
-                if(newstitle=="")
-                {
-                    newstitle=$(item).find("h2").text()   
-                }
-                if(newstitle=="")
-                {
-                    newstitle=$(item).find("h3").text()   
-                }
-                console.log(newstitle);
-            });
+
+            //top lastest news article
+            var article=$(".main-news").find("article");
+            var objNewsItem=new Object();
+            if (article!=undefined)
+            {
+                objNewsItem.Title=$(article).find("h1").text();
+                objNewsItem.Link=$(article).find("div").find("figure").find("a").attr("href");
+                objNewsItem.ImageSource=$(article).find("div").find("figure").find("img").attr("src");
+                objNewsItem.IsHeadLine=true;
+                newscollection.push(objNewsItem);
+            }
 
             
+            //top lastest block news artciles
+            $(".main-news").find(".blocks").find("article").each((i,item)=>{
+                objNewsItem.Title=$(item).find("h3").text();
+                objNewsItem.Link=$(item).find("div").find("figure").find("a").attr("href");
+                objNewsItem.ImageSource=$(item).find("div").find("figure").find("img").attr("src");
+                objNewsItem.IsHeadLine=false;
+                newscollection.push(objNewsItem);
+            })
+
+            console.log(JSON.stringify(newscollection));
         }
         done();
     }
