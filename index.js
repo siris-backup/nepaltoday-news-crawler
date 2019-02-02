@@ -2,7 +2,6 @@ console.log('crawler init....');
 var Crawler = require("crawler");
 console.log('crawler init completed');
 
-var crawledNewsCollection=new Array();
  
 function parseDainik(res)
 {
@@ -16,6 +15,7 @@ function parseDainik(res)
         objNewsItem.Link=$(item).find("a").attr("href");
         objNewsItem.ImageSource=$(item).find("a").find("img").attr("src");
         objNewsItem.IsHeadLine=true;
+        objNewsItem.Source="www.dainiknepal.com";
         newscollection.push(objNewsItem);
     });
 
@@ -26,6 +26,7 @@ function parseDainik(res)
         objNewsItem.Link=$(item).find("h2").find("a").attr("href");
         objNewsItem.ImageSource=$(item).find("img").attr("src");
         objNewsItem.IsHeadLine=false;
+        objNewsItem.Source="www.dainiknepal.com";
         newscollection.push(objNewsItem);
     });
     
@@ -49,6 +50,7 @@ function parseKantipur(res)
         objNewsItem.Link=$(article).find("div").find("figure").find("a").attr("href");
         objNewsItem.ImageSource=$(article).find("div").find("figure").find("img").attr("src");
         objNewsItem.IsHeadLine=true;
+        objNewsItem.Source="www.kantipurdaily.com";
         newscollection.push(objNewsItem);
     }
 
@@ -60,6 +62,7 @@ function parseKantipur(res)
         objNewsItem.Link=$(item).find("div").find("figure").find("a").attr("href");
         objNewsItem.ImageSource=$(item).find("div").find("figure").find("img").attr("src");
         objNewsItem.IsHeadLine=false;
+        objNewsItem.Source="www.kantipurdaily.com";
         newscollection.push(objNewsItem);
         }
      );
@@ -77,11 +80,11 @@ var c = new Crawler({
         {
             if(res.connection._host=="www.kantipurdaily.com")
             {
-                crawledNewsCollection.concat(parseKantipur(res))
+                parseKantipur(res);
             }
             else if(res.connection._host=="www.dainiknepal.com")
             {
-                crawledNewsCollection.concat(parseDainik(res))
+                parseDainik(res);
             }
         }
         done();
