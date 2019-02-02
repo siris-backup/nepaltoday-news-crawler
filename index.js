@@ -2,7 +2,52 @@ console.log('crawler init....');
 var Crawler = require("crawler");
 console.log('crawler init completed');
 
+var newsSites = ["https://kantipurdaily.com","https://dainiknepal.com","https://ratopati.com","https://setopati.com"];
  
+function parseSetopati(res)
+{
+    var newscollection =new Array();
+
+    var $ = res.$;
+    //head lines
+    $(".breaking-news-item").each((index,item)=>{
+        var objNewsItem=new Object();    
+        objNewsItem.Title=$(item).find("a>.main-title").text();
+        objNewsItem.Link=$(item).find("a").attr("href");
+        objNewsItem.ImageSource=$(item).find("a").find("img").attr("src")==undefined?"":$(item).find("a").find("img").attr("src");
+        objNewsItem.IsHeadLine=true;
+        objNewsItem.Source="www.setopati.com";
+        newscollection.push(objNewsItem);
+    });
+
+    $(".more-breaking-news .extra-news-item .items").each((index,item)=>{
+        var objNewsItem=new Object();    
+        objNewsItem.Title=$(item).find("a").attr("title");
+        objNewsItem.Link=$(item).find("a").attr("href");
+        objNewsItem.ImageSource=$(item).find("figure").find("img").attr("src");
+        objNewsItem.IsHeadLine=true;
+        objNewsItem.Source="www.setopati.com";
+        newscollection.push(objNewsItem);
+    });
+    console.log(JSON.stringify(newscollection));
+}
+
+function parseRatopati(res)
+{
+    var newscollection =new Array();
+
+    var $ = res.$;
+    //head lines
+    $("#visesh").each((index,item)=>{
+        var objNewsItem=new Object();    
+        objNewsItem.Title=$(item).find("h1").text();
+        objNewsItem.Link=$(item).find("a").attr("href");
+        objNewsItem.ImageSource=$(item).find("a").find("img").attr("src");
+        objNewsItem.IsHeadLine=true;
+        objNewsItem.Source="www.dainiknepal.com";
+        newscollection.push(objNewsItem);
+    });
+}
 function parseDainik(res)
 {
     var newscollection =new Array();
@@ -78,48 +123,32 @@ var c = new Crawler({
             console.log(error);
         }else
         {
-            if(res.connection._host=="www.kantipurdaily.com")
+            if(res.connection._host.includes("kantipurdaily.com"))
             {
                 parseKantipur(res);
             }
-            else if(res.connection._host=="www.dainiknepal.com")
+            else if(res.connection._host.includes("dainiknepal.com"))
             {
                 parseDainik(res);
             }
+            else if(res.connection._host.includes("setopati.com"))
+            {
+                parseSetopati(res);
+            }  
+            else if(res.connection._host.includes("ratopati.com"))
+            {
+               // parseRatopati(res);
+            }                        
         }
         done();
     }
 });
  
-c.queue('https://kantipurdaily.com');
+//scraping the news sites
+newsSites.forEach(element=>{
+    console.log(element);
+    c.queue(element);
+})
 
-c.queue('https://dainiknepal.com');
  
- /*
-// Queue just one URL, with default callback
-c.queue('http://www.amazon.com');
- 
-// Queue a list of URLs
-c.queue(['http://www.google.com/','http://www.yahoo.com']);
- 
-// Queue URLs with custom callbacks & parameters
-c.queue([{
-    uri: 'http://parishackers.org/',
-    jQuery: false,
- 
-    // The global callback won't be called
-    callback: function (error, res, done) {
-        if(error){
-            console.log(error);
-        }else{
-            console.log('Grabbed', res.body.length, 'bytes');
-        }
-        done();
-    }
-}]);
- 
-// Queue some HTML code directly without grabbing (mostly for tests)
-c.queue([{
-    html: '<p>This is a <strong>test</strong></p>'
-}]);
-*/
+
