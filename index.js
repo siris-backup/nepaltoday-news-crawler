@@ -2,14 +2,18 @@ console.log('crawler init....');
 var Crawler = require("crawler");
 console.log('crawler init completed');
 
+//Global variable for news sites
 var newsSites = ["https://kantipurdaily.com","https://dainiknepal.com","https://ratopati.com","https://setopati.com"];
- 
+
+/************************************************
+--It extracts the news from setopati.com
+************************************************/
 function parseSetopati(res)
 {
     var newscollection =new Array();
 
     var $ = res.$;
-    //head lines
+    //first breaking news extraction
     $(".breaking-news-item").each((index,item)=>{
         var objNewsItem=new Object();    
         objNewsItem.Title=$(item).find("a>.main-title").text();
@@ -20,6 +24,7 @@ function parseSetopati(res)
         newscollection.push(objNewsItem);
     });
 
+    //other breaking news extraction
     $(".more-breaking-news .extra-news-item .items").each((index,item)=>{
         var objNewsItem=new Object();    
         objNewsItem.Title=$(item).find("a").attr("title");
@@ -32,28 +37,40 @@ function parseSetopati(res)
     console.log(JSON.stringify(newscollection));
 }
 
+/************************************************
+--It extracts the news from ratopati.com
+************************************************/
 function parseRatopati(res)
 {
     var newscollection =new Array();
 
     var $ = res.$;
-    //head lines
-    $("#visesh").each((index,item)=>{
+    //breaking news extraction
+    $(".brkn-title").each((index,item)=>{
+        if($(item).text()!='')
+        {
         var objNewsItem=new Object();    
-        objNewsItem.Title=$(item).find("h1").text();
-        objNewsItem.Link=$(item).find("a").attr("href");
-        objNewsItem.ImageSource=$(item).find("a").find("img").attr("src");
+        objNewsItem.Title=$(item).text();
+        objNewsItem.Link="https://ratiopati.com" + $(item).find("a").attr("href");
+        objNewsItem.ImageSource=$(item).parent().next().next().find("img").attr("src");
         objNewsItem.IsHeadLine=true;
-        objNewsItem.Source="www.dainiknepal.com";
+        objNewsItem.Source="www.ratiopati.com";
         newscollection.push(objNewsItem);
+        }
     });
+
+    console.log(JSON.stringify(newscollection));
 }
+
+/************************************************
+--It extracts the news from dainiknepal.com
+************************************************/
 function parseDainik(res)
 {
     var newscollection =new Array();
 
     var $ = res.$;
-    //head lines
+    //visesh (breaking) news extraction
     $("#visesh").each((index,item)=>{
         var objNewsItem=new Object();    
         objNewsItem.Title=$(item).find("h1").text();
@@ -64,7 +81,7 @@ function parseDainik(res)
         newscollection.push(objNewsItem);
     });
 
-    //top bar
+    //top bar news extraction
     $(".top-bar_loop").each((index,item)=>{
         var objNewsItem=new Object();    
         objNewsItem.Title=$(item).find("h2").text();
@@ -78,6 +95,9 @@ function parseDainik(res)
     console.log(JSON.stringify(newscollection));
 }
 
+/************************************************
+--It extracts the news from kantipurdaily.com
+************************************************/
 function parseKantipur(res)
 {
     var newscollection =new Array();
@@ -115,6 +135,9 @@ function parseKantipur(res)
      console.log(JSON.stringify(newscollection));
 }
 
+/************************************************
+--Crawler initalization
+************************************************/
 var c = new Crawler({
     maxConnections : 10,
     // This will be called for each crawled page
@@ -137,14 +160,16 @@ var c = new Crawler({
             }  
             else if(res.connection._host.includes("ratopati.com"))
             {
-               // parseRatopati(res);
+                parseRatopati(res);
             }                        
         }
         done();
     }
 });
  
-//scraping the news sites
+/************************************************
+--Setting up the news sites for the crawler
+************************************************/
 newsSites.forEach(element=>{
     console.log(element);
     c.queue(element);
