@@ -1,2 +1,4 @@
 # project files
 node_modules/
+.env
+yarn-error.log
