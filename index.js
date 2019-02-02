@@ -2,50 +2,95 @@ console.log('crawler init....');
 var Crawler = require("crawler");
 console.log('crawler init completed');
 
-var newscollection =new Array();
-
+var crawledNewsCollection=new Array();
  
+function parseDainik(res)
+{
+    var newscollection =new Array();
+
+    var $ = res.$;
+    //head lines
+    $("#visesh").each((index,item)=>{
+        var objNewsItem=new Object();    
+        objNewsItem.Title=$(item).find("h1").text();
+        objNewsItem.Link=$(item).find("a").attr("href");
+        objNewsItem.ImageSource=$(item).find("a").find("img").attr("src");
+        objNewsItem.IsHeadLine=true;
+        newscollection.push(objNewsItem);
+    });
+
+    //top bar
+    $(".top-bar_loop").each((index,item)=>{
+        var objNewsItem=new Object();    
+        objNewsItem.Title=$(item).find("h2").text();
+        objNewsItem.Link=$(item).find("h2").find("a").attr("href");
+        objNewsItem.ImageSource=$(item).find("img").attr("src");
+        objNewsItem.IsHeadLine=false;
+        newscollection.push(objNewsItem);
+    });
+    
+    console.log(JSON.stringify(newscollection));
+}
+
+function parseKantipur(res)
+{
+    var newscollection =new Array();
+
+    var $ = res.$;
+    // $ is Cheerio by default
+    //a lean implementation of core jQuery designed specifically for the server
+
+    //top lastest news article
+    var article=$(".main-news").find("article");
+    var objNewsItem=new Object();
+    if (article!=undefined)
+    {
+        objNewsItem.Title=$(article).find("h1").text();
+        objNewsItem.Link=$(article).find("div").find("figure").find("a").attr("href");
+        objNewsItem.ImageSource=$(article).find("div").find("figure").find("img").attr("src");
+        objNewsItem.IsHeadLine=true;
+        newscollection.push(objNewsItem);
+    }
+
+    
+    //top lastest block news artciles
+    $(".main-news").find(".blocks").find("article").each((i,item)=>{
+        objNewsItem=new Object();
+        objNewsItem.Title=$(item).find("h3").text();
+        objNewsItem.Link=$(item).find("div").find("figure").find("a").attr("href");
+        objNewsItem.ImageSource=$(item).find("div").find("figure").find("img").attr("src");
+        objNewsItem.IsHeadLine=false;
+        newscollection.push(objNewsItem);
+        }
+     );
+
+     console.log(JSON.stringify(newscollection));
+}
+
 var c = new Crawler({
     maxConnections : 10,
     // This will be called for each crawled page
     callback : function (error, res, done) {
         if(error){
             console.log(error);
-        }else{
-            var $ = res.$;
-            // $ is Cheerio by default
-            //a lean implementation of core jQuery designed specifically for the server
-
-            //top lastest news article
-            var article=$(".main-news").find("article");
-            var objNewsItem=new Object();
-            if (article!=undefined)
+        }else
+        {
+            if(res.connection._host=="www.kantipurdaily.com")
             {
-                objNewsItem.Title=$(article).find("h1").text();
-                objNewsItem.Link=$(article).find("div").find("figure").find("a").attr("href");
-                objNewsItem.ImageSource=$(article).find("div").find("figure").find("img").attr("src");
-                objNewsItem.IsHeadLine=true;
-                newscollection.push(objNewsItem);
+                crawledNewsCollection.concat(parseKantipur(res))
             }
-
-            
-            //top lastest block news artciles
-            $(".main-news").find(".blocks").find("article").each((i,item)=>{
-                objNewsItem=new Object();
-                objNewsItem.Title=$(item).find("h3").text();
-                objNewsItem.Link=$(item).find("div").find("figure").find("a").attr("href");
-                objNewsItem.ImageSource=$(item).find("div").find("figure").find("img").attr("src");
-                objNewsItem.IsHeadLine=false;
-                newscollection.push(objNewsItem);
-            })
-
-            console.log(JSON.stringify(newscollection));
+            else if(res.connection._host=="www.dainiknepal.com")
+            {
+                crawledNewsCollection.concat(parseDainik(res))
+            }
         }
         done();
     }
 });
  
 c.queue('https://kantipurdaily.com');
+
+c.queue('https://dainiknepal.com');
  
  /*
 // Queue just one URL, with default callback
