@@ -1,4 +1,6 @@
-const nepalDbService = require('nepaltoday-db-service');
+const {newsDbService} = require('nepaltoday-db-service');
+
+//var dbService=new newsDbService();
 
 console.log('crawler init....');
 var Crawler = require("crawler");
@@ -17,23 +19,23 @@ function parseSetopati (res) {
 	//first breaking news extraction
 	$(".breaking-news-item").each((index, item) => {
 		var objNewsItem = new Object();
-		objNewsItem.Title = $(item).find("a>.main-title").text();
-		objNewsItem.Link = $(item).find("a").attr("href");
-		objNewsItem.ImageSource = $(item).find("a").find("img").attr("src") == undefined ? "" : $(item).find("a").find("img").attr("src");
-		objNewsItem.IsHeadLine = true;
-		objNewsItem.Source = "www.setopati.com";
-		newscollection.push(objNewsItem);
+		objNewsItem.title = $(item).find("a>.main-title").text();
+		objNewsItem.link = $(item).find("a").attr("href");
+		objNewsItem.imageLink = $(item).find("a").find("img").attr("src") == undefined ? "" : $(item).find("a").find("img").attr("src");
+		objNewsItem.isHeadline = true;
+		objNewsItem.source = "www.setopati.com";
+		newsDbService.saveArticle(objNewsItem);
 	});
 
 	//other breaking news extraction
 	$(".more-breaking-news .extra-news-item .items").each((index, item) => {
 		var objNewsItem = new Object();
-		objNewsItem.Title = $(item).find("a").attr("title");
-		objNewsItem.Link = $(item).find("a").attr("href");
-		objNewsItem.ImageSource = $(item).find("figure").find("img").attr("src");
-		objNewsItem.IsHeadLine = true;
-		objNewsItem.Source = "www.setopati.com";
-		newscollection.push(objNewsItem);
+		objNewsItem.title = $(item).find("a").attr("title");
+		objNewsItem.link = $(item).find("a").attr("href");
+		objNewsItem.imageLink = $(item).find("figure").find("img").attr("src");
+		objNewsItem.isHeadline = true;
+		objNewsItem.source = "www.setopati.com";
+		newsDbService.saveArticle(objNewsItem);
 	});
 	console.log(JSON.stringify(newscollection));
 }
@@ -49,12 +51,12 @@ function parseRatopati (res) {
 	$(".brkn-title").each((index, item) => {
 		if ($(item).text() != '') {
 			var objNewsItem = new Object();
-			objNewsItem.Title = $(item).text();
-			objNewsItem.Link = "https://ratiopati.com" + $(item).find("a").attr("href");
-			objNewsItem.ImageSource = $(item).parent().next().next().find("img").attr("src");
-			objNewsItem.IsHeadLine = true;
-			objNewsItem.Source = "www.ratiopati.com";
-			newscollection.push(objNewsItem);
+			objNewsItem.title = $(item).text();
+			objNewsItem.link = "https://ratiopati.com" + $(item).find("a").attr("href");
+			objNewsItem.imageLink = $(item).parent().next().next().find("img").attr("src");
+			objNewsItem.isHeadline = true;
+			objNewsItem.source = "www.ratiopati.com";
+			newsDbService.saveArticle(objNewsItem);
 		}
 	});
 
@@ -71,23 +73,23 @@ function parseDainik (res) {
 	//visesh (breaking) news extraction
 	$("#visesh").each((index, item) => {
 		var objNewsItem = new Object();
-		objNewsItem.Title = $(item).find("h1").text();
-		objNewsItem.Link = $(item).find("a").attr("href");
-		objNewsItem.ImageSource = $(item).find("a").find("img").attr("src");
-		objNewsItem.IsHeadLine = true;
-		objNewsItem.Source = "www.dainiknepal.com";
-		newscollection.push(objNewsItem);
+		objNewsItem.title = $(item).find("h1").text();
+		objNewsItem.link = $(item).find("a").attr("href");
+		objNewsItem.imageLink = $(item).find("a").find("img").attr("src");
+		objNewsItem.isHeadline = true;
+		objNewsItem.source = "www.dainiknepal.com";
+		newsDbService.saveArticle(objNewsItem);
 	});
 
 	//top bar news extraction
 	$(".top-bar_loop").each((index, item) => {
 		var objNewsItem = new Object();
-		objNewsItem.Title = $(item).find("h2").text();
-		objNewsItem.Link = $(item).find("h2").find("a").attr("href");
-		objNewsItem.ImageSource = $(item).find("img").attr("src");
-		objNewsItem.IsHeadLine = false;
-		objNewsItem.Source = "www.dainiknepal.com";
-		newscollection.push(objNewsItem);
+		objNewsItem.title = $(item).find("h2").text();
+		objNewsItem.link = $(item).find("h2").find("a").attr("href");
+		objNewsItem.imageLink = $(item).find("img").attr("src");
+		objNewsItem.isHeadline = false;
+		objNewsItem.source = "www.dainiknepal.com";
+		newsDbService.saveArticle(objNewsItem);
 	});
 
 	console.log(JSON.stringify(newscollection));
@@ -107,24 +109,25 @@ function parseKantipur (res) {
 	var article = $(".main-news").find("article");
 	var objNewsItem = new Object();
 	if (article != undefined) {
-		objNewsItem.Title = $(article).find("h1").text();
-		objNewsItem.Link = $(article).find("div").find("figure").find("a").attr("href");
-		objNewsItem.ImageSource = $(article).find("div").find("figure").find("img").attr("src");
-		objNewsItem.IsHeadLine = true;
-		objNewsItem.Source = "www.kantipurdaily.com";
-		newscollection.push(objNewsItem);
+		objNewsItem.title = $(article).find("h1").text();
+		objNewsItem.link = $(article).find("div").find("figure").find("a").attr("href");
+		objNewsItem.imageLink = $(article).find("div").find("figure").find("img").attr("src");
+		objNewsItem.isHeadline = true;
+		objNewsItem.source = "www.kantipurdaily.com";
+		newsDbService.saveArticle(objNewsItem);
+		//newscollection.push(objNewsItem);
 	}
 
 
 	//top lastest block news artciles
 	$(".main-news").find(".blocks").find("article").each((i, item) => {
 		objNewsItem = new Object();
-		objNewsItem.Title = $(item).find("h3").text();
-		objNewsItem.Link = $(item).find("div").find("figure").find("a").attr("href");
-		objNewsItem.ImageSource = $(item).find("div").find("figure").find("img").attr("src");
-		objNewsItem.IsHeadLine = false;
-		objNewsItem.Source = "www.kantipurdaily.com";
-		newscollection.push(objNewsItem);
+		objNewsItem.title = $(item).find("h3").text();
+		objNewsItem.link = $(item).find("div").find("figure").find("a").attr("href");
+		objNewsItem.imageLink = $(item).find("div").find("figure").find("img").attr("src");
+		objNewsItem.isHeadline = false;
+		objNewsItem.source = "www.kantipurdaily.com";
+		newsDbService.saveArticle(objNewsItem);
 	}
 	);
 
