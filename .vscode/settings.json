@@ -1,12 +1,15 @@
 {
-  "azureFunctions.projectRuntime": "~2",
-  "azureFunctions.projectLanguage": "JavaScript",
-  "azureFunctions.templateFilter": "Verified",
-  "azureFunctions.deploySubpath": ".",
-  "azureFunctions.preDeployTask": "func: extensions install",
-  "files.exclude": {
-    "obj": true,
-    "bin": true
-  },
-  "debug.internalConsoleOptions": "neverOpen"
+	"azureFunctions.projectRuntime": "~2",
+	"azureFunctions.projectLanguage": "JavaScript",
+	"azureFunctions.templateFilter": "Verified",
+	"azureFunctions.deploySubpath": ".",
+	"azureFunctions.preDeployTask": "func: extensions install",
+	"files.exclude": {
+		"obj": true,
+		"bin": true
+	},
+	"debug.internalConsoleOptions": "neverOpen",
+	"editor.insertSpaces": false,
+	"editor.tabSize": 4,
+	"editor.detectIndentation": false,
 }
