@@ -26,6 +26,8 @@ function parseSetopati (res) {
 		objNewsItem.imageLink = $(item).find("a").find("img").attr("src") == undefined ? "" : $(item).find("a").find("img").attr("src");
 		objNewsItem.isHeadline = true;
 		objNewsItem.source = "www.setopati.com";
+		objNewsItem.createdDate=new Date();
+		objNewsItem.modifiedDate=new Date();
 		newsDbService.saveArticle(objNewsItem);
 	});
 
@@ -37,6 +39,8 @@ function parseSetopati (res) {
 		objNewsItem.imageLink = $(item).find("figure").find("img").attr("src");
 		objNewsItem.isHeadline = true;
 		objNewsItem.source = "www.setopati.com";
+		objNewsItem.createdDate=new Date();
+		objNewsItem.modifiedDate=new Date();
 		newsDbService.saveArticle(objNewsItem);
 	});
 	console.log(JSON.stringify(newscollection));
@@ -58,6 +62,8 @@ function parseRatopati (res) {
 			objNewsItem.imageLink = $(item).parent().next().next().find("img").attr("src");
 			objNewsItem.isHeadline = true;
 			objNewsItem.source = "www.ratiopati.com";
+			objNewsItem.createdDate=new Date();
+			objNewsItem.modifiedDate=new Date();
 			newsDbService.saveArticle(objNewsItem);
 		}
 	});
@@ -80,6 +86,8 @@ function parseDainik (res) {
 		objNewsItem.imageLink = $(item).find("a").find("img").attr("src");
 		objNewsItem.isHeadline = true;
 		objNewsItem.source = "www.dainiknepal.com";
+		objNewsItem.createdDate=new Date();
+		objNewsItem.modifiedDate=new Date();
 		newsDbService.saveArticle(objNewsItem);
 	});
 
@@ -91,6 +99,8 @@ function parseDainik (res) {
 		objNewsItem.imageLink = $(item).find("img").attr("src");
 		objNewsItem.isHeadline = false;
 		objNewsItem.source = "www.dainiknepal.com";
+		objNewsItem.createdDate=new Date();
+		objNewsItem.modifiedDate=new Date();
 		newsDbService.saveArticle(objNewsItem);
 	});
 
@@ -116,6 +126,8 @@ function parseKantipur (res) {
 		objNewsItem.imageLink = $(article).find("div").find("figure").find("img").attr("src");
 		objNewsItem.isHeadline = true;
 		objNewsItem.source = "www.kantipurdaily.com";
+		objNewsItem.createdDate=new Date();
+		objNewsItem.modifiedDate=new Date();
 		newsDbService.saveArticle(objNewsItem);
 		//newscollection.push(objNewsItem);
 	}
@@ -129,6 +141,8 @@ function parseKantipur (res) {
 		objNewsItem.imageLink = $(item).find("div").find("figure").find("img").attr("src");
 		objNewsItem.isHeadline = false;
 		objNewsItem.source = "www.kantipurdaily.com";
+		objNewsItem.createdDate=new Date();
+		objNewsItem.modifiedDate=new Date();
 		newsDbService.saveArticle(objNewsItem);
 	}
 	);
