@@ -167,7 +167,6 @@ module.exports = function () {
 			if (error) {
 				console.log(error);
 			} else {
-				console.log('res inside crawler definition', res)
 				if (res.connection._host.includes('kantipurdaily.com')) {
 					parseKantipur(res);
 				} else if (res.connection._host.includes('dainiknepal.com')) {
