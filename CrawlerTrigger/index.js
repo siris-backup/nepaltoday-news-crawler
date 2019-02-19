@@ -27,7 +27,9 @@ module.exports = function () {
 			objNewsItem.createdDate = new Date();
 			objNewsItem.modifiedDate = new Date();
 
-			newscollection.push(objNewsItem);
+			if (!(objNewsItem.imageLink === '' || objNewsItem.imageLink === undefined)) {
+				newscollection.push(objNewsItem);
+			}
 		});
 
 		// other breaking news extraction
@@ -41,7 +43,9 @@ module.exports = function () {
 			objNewsItem.createdDate = new Date();
 			objNewsItem.modifiedDate = new Date();
 
-			newscollection.push(objNewsItem);
+			if (!(objNewsItem.imageLink === '' || objNewsItem.imageLink === undefined)) {
+				newscollection.push(objNewsItem);
+			}
 		});
 
 		newsDbService.saveArticles(newscollection);
@@ -66,7 +70,9 @@ module.exports = function () {
 				objNewsItem.createdDate = new Date();
 				objNewsItem.modifiedDate = new Date();
 
-				newscollection.push(objNewsItem);
+				if (!(objNewsItem.imageLink === '' || objNewsItem.imageLink === undefined)) {
+					newscollection.push(objNewsItem);
+				}
 			}
 		});
 
@@ -91,7 +97,9 @@ module.exports = function () {
 			objNewsItem.createdDate = new Date();
 			objNewsItem.modifiedDate = new Date();
 
-			newscollection.push(objNewsItem);
+			if (!(objNewsItem.imageLink === '' || objNewsItem.imageLink === undefined)) {
+				newscollection.push(objNewsItem);
+			}
 		});
 
 		// top bar news extraction
@@ -105,7 +113,9 @@ module.exports = function () {
 			objNewsItem.createdDate = new Date();
 			objNewsItem.modifiedDate = new Date();
 
-			newscollection.push(objNewsItem);
+			if (!(objNewsItem.imageLink === '' || objNewsItem.imageLink === undefined)) {
+				newscollection.push(objNewsItem);
+			}
 		});
 
 		newsDbService.saveArticles(newscollection)
@@ -132,8 +142,9 @@ module.exports = function () {
 			objNewsItem.source = findSourceIdByLink('kantipurdaily.com');
 			objNewsItem.createdDate = new Date();
 			objNewsItem.modifiedDate = new Date();
-
-			newscollection.push(objNewsItem);
+			if (!(objNewsItem.imageLink === '' || objNewsItem.imageLink === undefined)) {
+				newscollection.push(objNewsItem);
+			}
 		}
 
 		// top lastest block news artciles
@@ -147,7 +158,9 @@ module.exports = function () {
 			objNewsItem.createdDate = new Date();
 			objNewsItem.modifiedDate = new Date();
 
-			newscollection.push(objNewsItem);
+			if (!(objNewsItem.imageLink === '' || objNewsItem.imageLink === undefined)) {
+				newscollection.push(objNewsItem);
+			}
 		});
 
 		newsDbService.saveArticles(newscollection)
