@@ -137,7 +137,7 @@ module.exports = function () {
 		if (article !== undefined) {
 			objNewsItem.title = $(article).find('h1').text();
 			objNewsItem.link = $(article).find('div').find('figure').find('a').attr('href');
-			objNewsItem.imageLink = $(article).find('div').find('figure').find('img').attr('src');
+			objNewsItem.imageLink = 'http:' + $(article).find('div').find('figure').find('img').attr('src');
 			objNewsItem.isHeadline = true;
 			objNewsItem.source = findSourceIdByLink('kantipurdaily.com');
 			objNewsItem.createdDate = new Date();
@@ -152,7 +152,7 @@ module.exports = function () {
 			objNewsItem = {};
 			objNewsItem.title = $(item).find('h3').text();
 			objNewsItem.link = $(item).find('div').find('figure').find('a').attr('href');
-			objNewsItem.imageLink = $(item).find('div').find('figure').find('img').attr('src');
+			objNewsItem.imageLink = 'http:' + $(item).find('div').find('figure').find('img').attr('src');
 			objNewsItem.isHeadline = false;
 			objNewsItem.source = findSourceIdByLink('kantipurdaily.com');
 			objNewsItem.createdDate = new Date();
