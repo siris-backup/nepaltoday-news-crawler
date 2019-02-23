@@ -48,7 +48,8 @@ module.exports = function () {
 			}
 		});
 
-		newsDbService.saveArticles(newscollection);
+		newsDbService.saveArticles(newscollection)
+			.catch((error) => console.log(error))
 	}
 
 	/************************************************
@@ -76,7 +77,8 @@ module.exports = function () {
 			}
 		});
 
-		newsDbService.saveArticles(newscollection);
+		newsDbService.saveArticles(newscollection)
+			.catch((error) => console.log(error))
 	}
 
 	/************************************************
@@ -119,6 +121,7 @@ module.exports = function () {
 		});
 
 		newsDbService.saveArticles(newscollection)
+			.catch((error) => console.log(error))
 	}
 
 	/************************************************
@@ -164,6 +167,7 @@ module.exports = function () {
 		});
 
 		newsDbService.saveArticles(newscollection)
+			.catch((error) => console.log(error))
 	}
 
 	function findSourceIdByLink (link) {
@@ -193,6 +197,11 @@ module.exports = function () {
 			done();
 			console.log('crawler done scraping');
 		}
+	});
+
+	// global unhandledRejection handler
+	process.on('unhandledRejection', error => {
+		console.log('unhandledRejection', error);
 	});
 
 	/************************************************
