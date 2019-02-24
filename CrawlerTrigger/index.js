@@ -2,8 +2,10 @@ module.exports = function () {
 	const { newsDbService } = require('nepaltoday-db-service');
 
 	console.log('crawler init....');
-	var Crawler = require('crawler');
+	const Crawler = require('crawler');
 	console.log('crawler init completed');
+
+	const ipAddress = require('ip').address()
 
 	process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = 0;
 
@@ -26,6 +28,7 @@ module.exports = function () {
 			objNewsItem.source = findSourceIdByLink('setopati.com');
 			objNewsItem.createdDate = new Date();
 			objNewsItem.modifiedDate = new Date();
+			objNewsItem.hostIp = ipAddress
 
 			if (!(objNewsItem.imageLink === '' || objNewsItem.imageLink === undefined)) {
 				newscollection.push(objNewsItem);
@@ -42,6 +45,7 @@ module.exports = function () {
 			objNewsItem.source = findSourceIdByLink('setopati.com');
 			objNewsItem.createdDate = new Date();
 			objNewsItem.modifiedDate = new Date();
+			objNewsItem.hostIp = ipAddress
 
 			if (!(objNewsItem.imageLink === '' || objNewsItem.imageLink === undefined)) {
 				newscollection.push(objNewsItem);
@@ -70,6 +74,7 @@ module.exports = function () {
 				objNewsItem.source = findSourceIdByLink('ratopati.com')
 				objNewsItem.createdDate = new Date();
 				objNewsItem.modifiedDate = new Date();
+				objNewsItem.hostIp = ipAddress
 
 				if (!(objNewsItem.imageLink === '' || objNewsItem.imageLink === undefined)) {
 					newscollection.push(objNewsItem);
@@ -98,6 +103,7 @@ module.exports = function () {
 			objNewsItem.source = findSourceIdByLink('dainiknepal.com');
 			objNewsItem.createdDate = new Date();
 			objNewsItem.modifiedDate = new Date();
+			objNewsItem.hostIp = ipAddress
 
 			if (!(objNewsItem.imageLink === '' || objNewsItem.imageLink === undefined)) {
 				newscollection.push(objNewsItem);
@@ -114,6 +120,7 @@ module.exports = function () {
 			objNewsItem.source = findSourceIdByLink('dainiknepal.com');
 			objNewsItem.createdDate = new Date();
 			objNewsItem.modifiedDate = new Date();
+			objNewsItem.hostIp = ipAddress
 
 			if (!(objNewsItem.imageLink === '' || objNewsItem.imageLink === undefined)) {
 				newscollection.push(objNewsItem);
@@ -145,6 +152,8 @@ module.exports = function () {
 			objNewsItem.source = findSourceIdByLink('kantipurdaily.com');
 			objNewsItem.createdDate = new Date();
 			objNewsItem.modifiedDate = new Date();
+			objNewsItem.hostIp = ipAddress
+
 			if (!(objNewsItem.imageLink === '' || objNewsItem.imageLink === undefined)) {
 				newscollection.push(objNewsItem);
 			}
@@ -160,6 +169,7 @@ module.exports = function () {
 			objNewsItem.source = findSourceIdByLink('kantipurdaily.com');
 			objNewsItem.createdDate = new Date();
 			objNewsItem.modifiedDate = new Date();
+			objNewsItem.hostIp = ipAddress
 
 			if (!(objNewsItem.imageLink === '' || objNewsItem.imageLink === undefined)) {
 				newscollection.push(objNewsItem);
