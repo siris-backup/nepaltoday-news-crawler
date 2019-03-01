@@ -1,15 +1,15 @@
-module.exports = function () {
+module.exports = function (context) {
+	var timeStamp = new Date().toISOString();
+	context.log('Crawler Started.!', timeStamp);
+
 	const { newsDbService } = require('nepaltoday-db-service');
-
-	console.log('crawler init....');
 	const Crawler = require('crawler');
-	console.log('crawler init completed');
-
 	const ipAddress = require('ip').address()
 
 	process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = 0;
 
 	let newsSources = [];
+	let totalParsingDone = 0;
 
 	/************************************************
 	--It extracts the news from setopati.com
@@ -52,8 +52,8 @@ module.exports = function () {
 			}
 		});
 
-		newsDbService.saveArticles(newscollection)
-			.catch((error) => console.log(error))
+		return newsDbService.saveArticles(newscollection)
+			.catch((error) => context.log(error))
 	}
 
 	/************************************************
@@ -82,8 +82,8 @@ module.exports = function () {
 			}
 		});
 
-		newsDbService.saveArticles(newscollection)
-			.catch((error) => console.log(error))
+		return newsDbService.saveArticles(newscollection)
+			.catch((error) => context.log(error))
 	}
 
 	/************************************************
@@ -127,8 +127,8 @@ module.exports = function () {
 			}
 		});
 
-		newsDbService.saveArticles(newscollection)
-			.catch((error) => console.log(error))
+		return newsDbService.saveArticles(newscollection)
+			.catch((error) => context.log(error))
 	}
 
 	/************************************************
@@ -176,8 +176,8 @@ module.exports = function () {
 			}
 		});
 
-		newsDbService.saveArticles(newscollection)
-			.catch((error) => console.log(error))
+		return newsDbService.saveArticles(newscollection)
+			.catch((error) => context.log(error))
 	}
 
 	function findSourceIdByLink (link) {
@@ -192,26 +192,37 @@ module.exports = function () {
 		// This will be called for each crawled page
 		callback: function (error, res, done) {
 			if (error) {
-				console.log(error);
+				context.log(error);
 			} else {
+				context.log('parsing ', res.connection._host)
 				if (res.connection._host.includes('kantipurdaily.com')) {
-					parseKantipur(res);
+					parseKantipur(res).then(done).then(() => {
+						totalParsingDone++;
+						stopFunctionWhenAllDone();
+					})
 				} else if (res.connection._host.includes('dainiknepal.com')) {
-					parseDainik(res);
+					parseDainik(res).then(done).then(() => {
+						totalParsingDone++;
+						stopFunctionWhenAllDone();
+					})
 				} else if (res.connection._host.includes('setopati.com')) {
-					parseSetopati(res);
+					parseSetopati(res).then(done).then(() => {
+						totalParsingDone++;
+						stopFunctionWhenAllDone();
+					})
 				} else if (res.connection._host.includes('ratopati.com')) {
-					parseRatopati(res);
+					parseRatopati(res).then(done).then(() => {
+						totalParsingDone++;
+						stopFunctionWhenAllDone();
+					})
 				}
 			}
-			done();
-			console.log('crawler done scraping');
 		}
 	});
 
 	// global unhandledRejection handler
 	process.on('unhandledRejection', error => {
-		console.log('unhandledRejection', error);
+		context.log('unhandledRejection', error);
 	});
 
 	/************************************************
@@ -221,8 +232,14 @@ module.exports = function () {
 		newsSources = sources;
 
 		sources.forEach(source => {
-			console.log(source.link);
+			context.log(source.link);
 			c.queue(source.link);
 		})
 	})
+
+	function stopFunctionWhenAllDone () {
+		if (totalParsingDone === newsSources.length) {
+			context.done()
+		}
+	}
 };
