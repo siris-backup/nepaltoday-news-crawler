@@ -1,3 +1,3 @@
 var crawler = require('./CrawlerTrigger/index')
 
-crawler()
+crawler(console)
