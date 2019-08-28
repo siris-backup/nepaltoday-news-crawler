@@ -8,6 +8,7 @@ module.exports = async function (context, myTimer) {
 	context.log('JavaScript timer trigger function ran!', timeStamp);
 
 
+<<<<<<< Updated upstream
 	//use db-service to get twitter handles
 	//use twitter api library to get tweets
 	//sort tweets using algorithm
@@ -15,3 +16,21 @@ module.exports = async function (context, myTimer) {
 
 	context.log('printing some stuff')
 };
+=======
+  try {
+    context.log("we are starting from here");
+    context.log("data base url", process.env.DATABASE_URL);
+    const twitterHandles = await TweetDbService.getTwitterHandles();
+    u;
+    context.log(twitterHandles);
+    if (twitterHandles) {
+      twitterHandles.forEach(user => {
+        context.log("user here", user);
+        getTweetByHandle(user);
+      });
+    }
+  } catch (error) {
+    context.error(error);
+  }
+};
+>>>>>>> Stashed changes
