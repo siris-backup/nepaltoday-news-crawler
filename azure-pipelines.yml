@@ -20,12 +20,12 @@ variables:
 stages:
 - stage: Build
   displayName: Build stage
-  jobs:  
+  jobs:
   - job: Build
     displayName: Build
     pool:
       vmImage: $(vmImageName)
-      
+
     steps:
     - task: NodeTool@0
       inputs:
@@ -44,7 +44,7 @@ stages:
         npm run build --if-present
         npm run test --if-present
       displayName: 'Prepare binaries'
-      
+
     - task: ArchiveFiles@2
       displayName: 'Archive files'
       inputs:
@@ -65,12 +65,12 @@ stages:
   - deployment: Deploy
     displayName: Deploy
     environment: 'development'
-    pool: 
+    pool:
       vmImage: $(vmImageName)
     strategy:
       runOnce:
         deploy:
-          steps:            
+          steps:
           - task: AzureFunctionApp@1
             displayName: 'Azure Functions App Deploy: '
             inputs:
