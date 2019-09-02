@@ -11,5 +11,7 @@
 	"debug.internalConsoleOptions": "neverOpen",
 	"editor.insertSpaces": false,
 	"editor.tabSize": 4,
-	"editor.detectIndentation": false,
+	"editor.formatOnSave": true,
+	"editor.formatOnPaste": true,
+	"files.autoSave": "afterDelay"
 }
