@@ -1,7 +1,8 @@
-const puppeteer = require('puppeteer')
 const cheerio = require('cheerio')
 const request = require('request')
+
 process.setMaxListeners(Infinity)
+
 const { newsPortalLink } = require('../constants/portal')
 const { KANTIPUR, SETOPATI, RATOPATI, DAINIK_KHABAR } = newsPortalLink
 

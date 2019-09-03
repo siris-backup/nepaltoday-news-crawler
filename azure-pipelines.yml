@@ -5,18 +5,16 @@
 
 trigger:
   - master
-  - nep-26-scrape-category-excerpt
-  - USE-cheerio
 
 variables:
   # Azure Resource Manager connection created during pipeline creation
-  azureSubscription: '522d30d2-7533-4b2c-b3b6-98f527cd9842'
+  azureSubscription: "522d30d2-7533-4b2c-b3b6-98f527cd9842"
 
   # Function app name
-  functionAppName: 'nepaltoday-crawler-qa'
+  functionAppName: "nepaltoday-crawler-qa"
 
   # Agent VM image name
-  vmImageName: 'ubuntu-latest'
+  vmImageName: "ubuntu-latest"
 
 stages:
   - stage: Build
@@ -30,26 +28,26 @@ stages:
         steps:
           - task: NodeTool@0
             inputs:
-              versionSpec: '10.x'
-            displayName: 'Install Node.js'
+              versionSpec: "10.x"
+            displayName: "Install Node.js"
 
           - script: |
               if [ -f extensions.csproj ]
               then
                   dotnet build extensions.csproj --runtime ubuntu.16.04-x64 --output ./bin
               fi
-            displayName: 'Build extensions'
+            displayName: "Build extensions"
 
           - script: |
               npm install
               npm run build --if-present
               npm run test --if-present
-            displayName: 'Prepare binaries'
+            displayName: "Prepare binaries"
 
           - task: ArchiveFiles@2
-            displayName: 'Archive files'
+            displayName: "Archive files"
             inputs:
-              rootFolderOrFile: '$(System.DefaultWorkingDirectory)'
+              rootFolderOrFile: "$(System.DefaultWorkingDirectory)"
               includeRootFolder: false
               archiveType: zip
               archiveFile: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
@@ -65,7 +63,7 @@ stages:
     jobs:
       - deployment: Deploy
         displayName: Deploy
-        environment: 'development'
+        environment: "development"
         pool:
           vmImage: $(vmImageName)
         strategy:
@@ -73,9 +71,9 @@ stages:
             deploy:
               steps:
                 - task: AzureFunctionApp@1
-                  displayName: 'Azure Functions App Deploy: '
+                  displayName: "Azure Functions App Deploy: "
                   inputs:
-                    azureSubscription: '$(azureSubscription)'
+                    azureSubscription: "$(azureSubscription)"
                     appType: functionAppLinux
                     appName: $(functionAppName)
-                    package: '$(Pipeline.Workspace)/drop/$(Build.BuildId).zip'
+                    package: "$(Pipeline.Workspace)/drop/$(Build.BuildId).zip"
