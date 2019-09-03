@@ -1,4 +1,16 @@
 const Mercury = require('@postlight/mercury-parser')
+const Entities = require('html-entities').AllHtmlEntities
+
+const getContent = content => {
+	const entities = new Entities()
+
+	const rejex = /(<([^>]+)>)/gi
+
+	return entities
+		.decode(content)
+		.replace(rejex, '')
+		.slice(0, 1000)
+}
 
 const scrapeNewsContent = async (link, logoLink) => {
 	try {
@@ -7,7 +19,7 @@ const scrapeNewsContent = async (link, logoLink) => {
 			return {
 				title: scrappedNews.title,
 				shortDescription: scrappedNews.excerpt,
-				content: scrappedNews.content || null,
+				content: scrappedNews.content ? getContent(scrappedNews.content) : null,
 				link: scrappedNews.url || link,
 				imageLink: scrappedNews.lead_image_url || logoLink,
 				publishedDate: scrappedNews.date_published || new Date()
