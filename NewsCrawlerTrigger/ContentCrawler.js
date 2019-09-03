@@ -7,7 +7,7 @@ const scrapeNewsContent = async (link, logoLink) => {
 			return {
 				title: scrappedNews.title,
 				shortDescription: scrappedNews.excerpt,
-				content: null,
+				content: scrappedNews.content || null,
 				link: scrappedNews.url || link,
 				imageLink: scrappedNews.lead_image_url || logoLink,
 				publishedDate: scrappedNews.date_published || new Date()
