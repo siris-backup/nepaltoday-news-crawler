@@ -27,31 +27,43 @@ module.exports = async function(context, myTimer) {
 		}
 	}
 
-	function getTweetByHandle(user) {
-		try {
-			let params = { q: `${user.handle}` }
+	function getTweets(handle) {
+		return new Promise((resolve, reject) => {
+			let params = { q: `${handle}` }
 			client.get('search/tweets', params, function(error, tweets, response) {
 				if (!error) {
 					context.log('tweets in --', tweets)
-					sortAndSaveTweets(tweets.statuses, user)
+					resolve(tweets.statuses)
 				} else {
-					throw new Error(`Error occured while fetching tweets STACK: ${error}`)
+					reject(error)
 				}
 			})
+		})
+	}
+
+	async function getTweetByHandle(user) {
+		try {
+			const handle = user.handle
+			const tweets = await getTweets(handle)
+			if (tweets && tweets.length > 0) {
+				sortAndSaveTweets(tweets, user)
+			} else {
+				context.log('error on getting tweets !!!!!!!!!!!!!!!!!')
+			}
 		} catch (error) {
-			context.error(error)
+			context.log('error occured', error)
 		}
 	}
 
 	try {
 		const twitterHandles = await TweetDbService.getTwitterHandles()
 		if (twitterHandles) {
-			twitterHandles.forEach(user => {
+			for (user of twitterHandles) {
 				context.log('user here', user)
-				getTweetByHandle(user)
-			})
+				await getTweetByHandle(user)
+			}
 		}
 	} catch (error) {
-		context.error(error)
+		context.log(error)
 	}
 }
