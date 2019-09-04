@@ -47,7 +47,6 @@ module.exports = async function(context, myTimer) {
 									content.isHeadline = true // TODO: check if h1 or h2
 									content.hostIp = ipAddress
 									content.category = categoryName
-									//   console.log("content", content);
 									const savedArticle = await newsDbService.saveArticle(content)
 									if (savedArticle) {
 										context.log('article saved successfully!!!!')
