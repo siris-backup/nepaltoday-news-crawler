@@ -12,7 +12,7 @@ const getContent = content => {
 		.slice(0, 1000)
 }
 
-const scrapeNewsContent = async (link, logoLink) => {
+const scrapeNewsContent = async (link, logoLink, context) => {
 	try {
 		const scrappedNews = await Mercury.parse(link)
 		if (scrappedNews) {
