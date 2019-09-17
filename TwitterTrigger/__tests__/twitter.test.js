@@ -27,7 +27,6 @@ describe('Twitter Trigger', () => {
 	// 		include_rts: false
 	// 	}
 	// 	const tweets = await client.get('statuses/user_timeline', params)
-	// 	console.log('tweets here', tweets)
 	// 	expect(tweets.length).toBeGreaterThan(0)
 	// })
 	// TODO for checking local functions as well
