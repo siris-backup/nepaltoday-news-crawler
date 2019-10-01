@@ -1,5 +1,5 @@
 trigger:
-  - master
+  - release
 
 variables:
   azureSubscription: "522d30d2-7533-4b2c-b3b6-98f527cd9842"
@@ -51,7 +51,7 @@ stages:
   - stage: Deploy
     displayName: Deploy stage
     dependsOn: Build
-    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/release'))
     jobs:
       - deployment: Deploy
         displayName: Deploy
