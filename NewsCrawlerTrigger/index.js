@@ -10,6 +10,14 @@ module.exports = async function(context, myTimer) {
 		context.log('JavaScript is running late!')
 	}
 
+	const getCategoryName = category => {
+		if (category === 'news' || category === 'politics') {
+			return 'news'
+		} else {
+			return category
+		}
+	}
+
 	try {
 		const sources = await newsDbService.getAllSources()
 		if (sources) {
@@ -20,8 +28,7 @@ module.exports = async function(context, myTimer) {
 				const categories = source.category
 
 				if (categories) {
-					context.log('Printing categories', categories)
-					context.log('Printing categories.length', categories.length)
+					const crawlTime = new Date()
 
 					for (const category of categories) {
 						context.log('Printing category', category)
@@ -29,25 +36,23 @@ module.exports = async function(context, myTimer) {
 						const categoryName = category.name
 						const url = `${baseUrl}${category.path}`
 
-						const { error, links } = await scrapeNewsLink(baseUrl, url, context)
+						const { error, links } = await scrapeNewsLink(baseUrl, url)
 						if (error) {
 							context.log('Error occured getting news lnks ', error)
 						}
-
-						context.log('Printing links', links)
 
 						if (Array.isArray(links) && links.length > 0) {
 							for (const link of links) {
 								const content = await getNewsContent(`${link}`, logoLink, baseUrl, context)
 
-								context.log('content here', content)
 								if (content && content.title && sourceId) {
 									content.source = sourceId
-									content.createdDate = new Date()
-									content.modifiedDate = new Date()
+									content.createdDate = crawlTime
+									content.modifiedDate = crawlTime
+									content.publishedDate = crawlTime
 									content.isHeadline = true // TODO: check if h1 or h2
 									content.hostIp = ipAddress
-									content.category = categoryName
+									content.category = getCategoryName(categoryName)
 									const savedArticle = await newsDbService.saveArticle(content)
 									if (savedArticle) {
 										context.log('article saved successfully!!!!')
