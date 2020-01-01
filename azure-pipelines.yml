@@ -8,7 +8,7 @@ trigger:
 
 variables:
   # Azure Resource Manager connection created during pipeline creation
-  azureSubscription: "522d30d2-7533-4b2c-b3b6-98f527cd9842"
+  azureSubscription: "vs-salesforce"
 
   # Function app name
   functionAppName: "nepaltoday-crawler-qa"
