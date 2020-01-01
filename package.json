@@ -7,7 +7,7 @@
 		"start": "node index.js",
 		"lint": "eslint \"**/*.{js,jsx}\"",
 		"format": "pretty-quick",
-		"test": "jest"
+		"test": "jest --testMatch '**/?(*.)+(spec|test).[jt]s?(x)'"
 	},
 	"keywords": [
 		"Mobile",
