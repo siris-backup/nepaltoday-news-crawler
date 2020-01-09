@@ -34,6 +34,15 @@ const selector = {
 			SELECTOR: 'src'
 		},
 		CONTENT: 'div#sing_left div#sing_cont div.content p'
+	},
+	onlinekhabar: {
+		TITLE: 'h2.mb-0',
+		EXCERPT: 'div.main__read--content p:first-child',
+		LEAD_IMAGE: {
+			PATH: 'div.col.colspan3.dtl-img img',
+			SELECTOR: 'src'
+		},
+		CONTENT: 'div.main__read--content p'
 	}
 }
 
