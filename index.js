@@ -1,5 +1,5 @@
-var crawler = require("./CrawlerTrigger/index");
-let twitter = require("./TwitterTrigger/index");
+var crawler = require('./NewsCrawlerTrigger/index')
+let twitter = require('./TwitterTrigger/index')
 
-crawler(console);
-twitter(console);
+crawler(console)
+twitter(console)

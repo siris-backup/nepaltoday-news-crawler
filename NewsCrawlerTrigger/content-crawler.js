@@ -28,6 +28,12 @@ const getNewsContent = async (link, logoLink, baseUrl, context) => {
 				return data
 			}
 		}
+		if (baseUrl === url.ONLINE_KHABAR) {
+			const { error, data } = await manualScrapper(link, logoLink, selector.onlinekhabar, context)
+			if (!error) {
+				return data
+			}
+		}
 		return null
 	} catch (error) {
 		return null
