@@ -56,4 +56,11 @@ describe('manual-scrapper', () => {
 		expect(data.shortDescription.length).not.toBeGreaterThan(300)
 		expect(error).toBeFalsy()
 	})
+	it('manualScrapper should scrape online khabar', async () => {
+		const link = 'https://www.onlinekhabar.com/2020/01/827626'
+		const logoLink = 'test logoLink'
+		const { error, data } = await manualScrapper(link, logoLink, selector.onlinekhabar)
+		expect(data.content).not.toBe(null)
+		expect(error).toBeFalsy()
+	})
 })
